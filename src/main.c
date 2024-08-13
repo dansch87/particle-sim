@@ -1,9 +1,7 @@
 #include <stdlib.h>
 #include "raylib.h"
 #include "particle.h"
-
-
-#define MAX_PARTICLES 1000
+#include "config.h"
 
 
 int main(void) {
@@ -11,7 +9,7 @@ int main(void) {
     const int screenWidth = 1200;
     const int screenHeight = 800;
 
-    InitWindow(screenWidth, screenHeight, "Particle Simulation");
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Particle Simulation");
 
     SetTargetFPS(60);
 

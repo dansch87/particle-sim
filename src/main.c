@@ -18,7 +18,7 @@ int main(void) {
     // Initialize Particle Array
     Particle particles[MAX_PARTICLES] = { 0 };
     for (int i = 0; i < MAX_PARTICLES; i++) {
-        initialize_random_particle(&particles[i], 
+        initialize_particle(&particles[i], 
                 (Vector2){ GetRandomValue(0, screenWidth), GetRandomValue(0, screenHeight) },
                 (Vector2){ GetRandomValue(-50, 50) / 10.0f, GetRandomValue(-50, 50) / 10.0f }
                 );

@@ -9,7 +9,7 @@ typedef struct {
 } Particle;
 
 
-void initialize_random_particle(Particle *p, Vector2 start_position, Vector2 start_velocity);
+void initialize_particle(Particle *p, Vector2 start_position, Vector2 start_velocity);
 
 void update_particle_position(Particle *p);
 

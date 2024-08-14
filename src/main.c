@@ -25,11 +25,16 @@ int main(void) {
         // Update Particles
         for (int i = 0; i < MAX_PARTICLES; i++) {
             update_particle_position(&particles[i]);
+            check_collision_window(&particles[i], WINDOW_WIDTH, WINDOW_HEIGHT);
+            for (int j = i + 1; j < MAX_PARTICLES; j++) {
+                if (check_collision_particle(&particles[i], &particles[j])) {
+                    resolve_collision_particle(&particles[i], &particles[j]);
+                }
+            }
         }
 
         // Check for window collision
         for (int i = 0; i < MAX_PARTICLES; i++) {
-            check_collision_window(&particles[i], WINDOW_WIDTH, WINDOW_HEIGHT);
         }
         
         BeginDrawing();

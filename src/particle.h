@@ -19,4 +19,8 @@ void draw_particle(Particle *p);
 
 void check_collision_window(Particle *p, int wwin_width, int win_height);
 
+int check_collision_particle(Particle *p1, Particle *p2);
+
+void resolve_collision_particle(Particle *p1, Particle *p2);
+
 #endif

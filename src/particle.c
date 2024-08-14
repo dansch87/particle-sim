@@ -21,6 +21,7 @@ void update_particle_position(Particle *p) {
 }
 
 void check_collision_window(Particle *p, int win_width, int win_height) {
+    //TODO: fix ocassionally overlapping of particles at the window borders 
     // Change velocity direction when collision with window border occurs
     if (p->position.x <= 0 || p->position.x >= win_width) {
         p->velocity.x *= -1;
@@ -55,6 +56,7 @@ int check_collision_particle(Particle *p1, Particle *p2) {
 }
 
 void resolve_collision_particle(Particle *p1, Particle *p2) {
+    //TODO: documentation
     // Normalized normal vector
     Vector2 normal = { p2->position.x - p1->position.x, p2->position.y - p1->position.y };
     float distance = Vector2Length(normal);

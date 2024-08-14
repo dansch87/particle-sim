@@ -6,9 +6,6 @@
 
 int main(void) {
 
-    const int screenWidth = 1200;
-    const int screenHeight = 800;
-
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Particle Simulation");
 
     SetTargetFPS(60);
@@ -17,17 +14,22 @@ int main(void) {
     Particle particles[MAX_PARTICLES] = { 0 };
     for (int i = 0; i < MAX_PARTICLES; i++) {
         initialize_particle(&particles[i], 
-                (Vector2){ GetRandomValue(0, screenWidth), GetRandomValue(0, screenHeight) },
-                (Vector2){ GetRandomValue(-50, 50) / 10.0f, GetRandomValue(-50, 50) / 10.0f }
+                (Vector2){ GetRandomValue(0, WINDOW_WIDTH), GetRandomValue(0, WINDOW_HEIGHT) },
+                (Vector2){ GetRandomValue(-50, 50) / 10.0f, GetRandomValue(-50, 50) / 10.0f },
+                5.0f
                 );
     }
 
-
     while (!WindowShouldClose()) {
 
-        //TODO: Update Particles
+        // Update Particles
         for (int i = 0; i < MAX_PARTICLES; i++) {
             update_particle_position(&particles[i]);
+        }
+
+        // Check for window collision
+        for (int i = 0; i < MAX_PARTICLES; i++) {
+            check_collision_window(&particles[i], WINDOW_WIDTH, WINDOW_HEIGHT);
         }
         
         BeginDrawing();

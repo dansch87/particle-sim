@@ -45,14 +45,16 @@ void check_collision_window(Particle *p, int win_width, int win_height) {
     }
 }
 
-int check_collision_particle(Particle *p1, Particle *p2) {
-    // Calculate distance between particles
-    float dist_x = p2->position.x - p1->position.x;
-    float dist_y = p2->position.y - p1->position.y;
-    float distance = sqrtf(dist_x * dist_x + dist_y * dist_y);
+static float vector_magnitude(Vector2 *pos1, Vector2 *pos2) {
+    float dist_x = pos2->x - pos1->x;
+    float dist_y = pos2->y - pos1->y;
+    return sqrtf(dist_x * dist_x + dist_y * dist_y);
+}
 
+int check_collision_particle(Particle *p1, Particle *p2) {
+    float magnitude = vector_magnitude(&p1->position, &p2->position);
     // Check if distance between particles is < sum of radius of both particles
-    return distance <= (p1->radius + p2->radius);
+    return magnitude <= (p1->radius + p2->radius);
 }
 
 void resolve_collision_particle(Particle *p1, Particle *p2) {

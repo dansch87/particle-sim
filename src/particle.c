@@ -49,7 +49,7 @@ int check_collision_particle(Particle *p1, Particle *p2) {
     // Calculate distance between particles
     float dist_x = p2->position.x - p1->position.x;
     float dist_y = p2->position.y - p1->position.y;
-    float distance = sqrt(dist_x * dist_x + dist_y * dist_y);
+    float distance = sqrtf(dist_x * dist_x + dist_y * dist_y);
 
     // Check if distance between particles is < sum of radius of both particles
     return distance <= (p1->radius + p2->radius);

@@ -21,7 +21,6 @@ void update_particle_position(Particle *p) {
 }
 
 void check_collision_window(Particle *p, int win_width, int win_height) {
-    //TODO: fix ocassionally overlapping of particles at the window borders 
     // Change velocity direction when collision with window border occurs
     if (p->position.x <= 0 || p->position.x >= win_width) {
         p->velocity.x *= -1;
@@ -31,16 +30,16 @@ void check_collision_window(Particle *p, int win_width, int win_height) {
     }
 
     // Correction of position if particle has cross the window border
-    if (p->position.x < 0) {
+    if (p->position.x <= 0) {
         p->position.x = 0 + p->radius;
     }
-    if (p->position.x > win_width) {
+    if (p->position.x >= win_width) {
         p->position.x = win_width - p->radius;
     }
-    if (p->position.y < 0) {
+    if (p->position.y <= 0) {
         p->position.y = 0 + p->radius;
     }
-    if (p->position.y > win_height) {
+    if (p->position.y >= win_height) {
         p->position.y = win_height - p->radius;
     }
 }
@@ -52,7 +51,6 @@ static float vector_magnitude(Vector2 *pos1, Vector2 *pos2) {
 }
 
 int check_collision_particle(Particle *p1, Particle *p2) {
-    // TODO: Right now worst case is O(n^2); solutions: Quad tree, etc.
     float magnitude = vector_magnitude(&p1->position, &p2->position);
     // Check if distance between particles is < sum of radius of both particles
     return magnitude <= (p1->radius + p2->radius);

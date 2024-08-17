@@ -52,27 +52,32 @@ static float vector_magnitude(Vector2 *pos1, Vector2 *pos2) {
 }
 
 int check_collision_particle(Particle *p1, Particle *p2) {
+    // TODO: Right now worst case is O(n^2); solutions: Quad tree, etc.
     float magnitude = vector_magnitude(&p1->position, &p2->position);
     // Check if distance between particles is < sum of radius of both particles
     return magnitude <= (p1->radius + p2->radius);
 }
 
 void resolve_collision_particle(Particle *p1, Particle *p2) {
-    //TODO: documentation
-    // Normalized normal vector
+    // Step 1: Check if particles are approaching each other and handling the collision is necessary.
+    // Step 1.1: Calculate Unit Normal Vector
     Vector2 normal = { p2->position.x - p1->position.x, p2->position.y - p1->position.y };
+    // Normalize normal Vector to get its unit vector
     float distance = Vector2Length(normal);
     normal.x /= distance;
     normal.y /= distance;
 
+    // Step 1.2: Caluculate Velocity for Unit Normal Vector
     Vector2 relative_velocity = { p2->velocity.x - p1->velocity.x, p2->velocity.y - p1->velocity.y };
     float velocity_along_normal = relative_velocity.x * normal.x + relative_velocity.y * normal.y;
-
+    // Step 1.3: Check direction for collision
+    // velocity < 0: particles approaching each other
+    // velocity > 0: particles are moving away from each other
     if (velocity_along_normal > 0) return;
 
-    float restitution = 1.0f; // elastic collision
+    // Step 2: Update velocity based on elastic colllision formulas
+    float restitution = 1.0f;
     float impulse = (-(1 + restitution) * velocity_along_normal) / 2;
-
     Vector2 impulse_vector = { impulse * normal.x, impulse * normal.y };
     p1->velocity.x -= impulse_vector.x;
     p1->velocity.y -= impulse_vector.y;

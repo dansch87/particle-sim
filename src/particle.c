@@ -11,7 +11,7 @@ void initialize_particle(Particle *p, Vector2 start_position, Vector2 start_velo
 }
 
 void draw_particle(Particle *p) {
-    Color color = DARKBLUE;
+    Color color = YELLOW;
     DrawCircle(p->position.x, p->position.y, p->radius, color); 
 }
 

@@ -46,7 +46,7 @@ int main(void) {
         }
         
         BeginDrawing();
-            ClearBackground(RAYWHITE);
+            ClearBackground(BLACK);
             // Draw Particles
             for (int i = 0; i < MAX_PARTICLES; i++) {
                 draw_particle(&particles[i]);

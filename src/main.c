@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "raylib.h"
 #include "particle.h"
+#include "kdtree.h"
 #include "config.h"
 
 
@@ -28,6 +29,9 @@ int main(void) {
                 );
     }
 
+    // Intialize K-D Tree root
+    KDNode *root = NULL;
+
     while (!WindowShouldClose()) {
 
         // Update Particles
@@ -40,6 +44,10 @@ int main(void) {
                 }
             }
         }
+
+        // Rebuild K-D Tree
+        kdtree_free(root);
+        root = kdtree_build(particles, MAX_PARTICLES);
 
         // Check for window collision
         for (int i = 0; i < MAX_PARTICLES; i++) {

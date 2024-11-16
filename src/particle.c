@@ -7,8 +7,7 @@
 #include "config.h"
 
 
-Texture2D particle_create_texture(float radius, Color color)
-{
+Texture2D particle_create_texture(float radius, Color color) {
     int diameter = radius * 2;
     Image img = GenImageColor(diameter, diameter, BLANK);
     

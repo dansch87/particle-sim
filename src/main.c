@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <stdio.h>
+
 #include "raylib.h"
 #include "particle.h"
 #include "config.h"
@@ -11,32 +13,36 @@
  */
 
 
-
 int main(void) {
 
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Particle Simulation");
 
     SetTargetFPS(60);
 
+    // Create Particle Texture
+    Texture2D particleTexture = particle_create_texture(PARTICLE_RADIUS, PARTICLE_COLOR);
+
     // Initialize Particle Array
     Particle particles[MAX_PARTICLES] = { 0 };
     for (int i = 0; i < MAX_PARTICLES; i++) {
-        initialize_particle(&particles[i], 
+        particle_init(&particles[i], 
                 (Vector2){ GetRandomValue(0, WINDOW_WIDTH), GetRandomValue(0, WINDOW_HEIGHT) },
-                (Vector2){ GetRandomValue(-50, 50) / 10.0f, GetRandomValue(-50, 50) / 10.0f },
-                5.0f
+                (Vector2){(float)GetRandomValue(-PARTICLE_VELOCITY, PARTICLE_VELOCITY), (float)GetRandomValue(-PARTICLE_VELOCITY, PARTICLE_VELOCITY)},
+                PARTICLE_RADIUS
                 );
     }
 
     while (!WindowShouldClose()) {
 
+        float delta_time = GetFrameTime();
+
         // Update Particles
         for (int i = 0; i < MAX_PARTICLES; i++) {
-            update_particle_position(&particles[i]);
-            check_collision_window(&particles[i], WINDOW_WIDTH, WINDOW_HEIGHT);
+            particle_update_position(&particles[i], delta_time);
+            particle_handle_window_collision(&particles[i], WINDOW_WIDTH, WINDOW_HEIGHT);
             for (int j = i + 1; j < MAX_PARTICLES; j++) {
-                if (check_collision_particle(&particles[i], &particles[j])) {
-                    resolve_collision_particle(&particles[i], &particles[j]);
+                if (particle_check_particle_collision(&particles[i], &particles[j])) {
+                    particle_resolve_particle_collision(&particles[i], &particles[j]);
                 }
             }
         }
@@ -46,11 +52,15 @@ int main(void) {
         }
         
         BeginDrawing();
-            ClearBackground(BLACK);
+            ClearBackground(BACKGROUND_COLOR);
+            DrawFPS(10, 10);
+
             // Draw Particles
             for (int i = 0; i < MAX_PARTICLES; i++) {
-                draw_particle(&particles[i]);
+                particle_draw_texture(&particleTexture, &particles[i]);
+                //particle_draw(&particles[i]);
             }
+
         EndDrawing();
     }
 

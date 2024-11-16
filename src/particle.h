@@ -18,10 +18,9 @@ void particle_init(Particle *p, Vector2 start_position, Vector2 start_velocity, 
 
 void particle_update_position(Particle *p, float delta_time);
 
-// draws particle that is stored in an array to windows
 void particle_draw(Particle *p);
 
-void particle_handle_window_collision(Particle *p, int wwin_width, int win_height);
+void particle_handle_window_collision(Particle *p);
 
 int particle_check_particle_collision(Particle *p1, Particle *p2);
 

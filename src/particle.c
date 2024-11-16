@@ -55,28 +55,20 @@ void particle_update_position(Particle *p, float delta_time) {
     p->position.y += p->velocity.y * delta_time;
 }
 
-void particle_handle_window_collision(Particle *p, int win_width, int win_height) {
+void particle_handle_window_collision(Particle *p) {
     // Change velocity direction when collision with window border occurs
-    if (p->position.x <= 0 || p->position.x >= win_width) {
-        p->velocity.x *= -1;
-    }
-    if (p->position.y <= 0 || p->position.y >= win_height) {
-        p->velocity.y *= -1;
-    }
-
-    // Correction of position if particle has cross the window border
-    if (p->position.x <= 0) {
-        p->position.x = 0 + p->radius;
-    }
-    if (p->position.x >= win_width) {
-        p->position.x = win_width - p->radius;
-    }
-    if (p->position.y <= 0) {
-        p->position.y = 0 + p->radius;
-    }
-    if (p->position.y >= win_height) {
-        p->position.y = win_height - p->radius;
-    }
+    if (p->position.x >= (WINDOW_WIDTH - p->radius)) {
+		p->velocity.x *= -1;
+	}
+	if (p->position.x <= (0 + p->radius)) {
+		p->velocity.x *= -1;
+	}
+	if (p->position.y >= (WINDOW_HEIGHT - p->radius)) {
+		p->velocity.y *= -1;
+	}
+	if (p->position.y <= (0 + p->radius)) {
+		p->velocity.y *= -1;
+	}
 }
 
 static float vector_magnitude(Vector2 *pos1, Vector2 *pos2) {

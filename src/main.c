@@ -39,7 +39,7 @@ int main(void) {
         // Update Particles
         for (int i = 0; i < MAX_PARTICLES; i++) {
             particle_update_position(&particles[i], delta_time);
-            particle_handle_window_collision(&particles[i], WINDOW_WIDTH, WINDOW_HEIGHT);
+            particle_handle_window_collision(&particles[i]);
             for (int j = i + 1; j < MAX_PARTICLES; j++) {
                 if (particle_check_particle_collision(&particles[i], &particles[j])) {
                     particle_resolve_particle_collision(&particles[i], &particles[j]);

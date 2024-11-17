@@ -7,10 +7,10 @@
 #include "quadtree.h"
 #include "arena.h"
 
-/* TODO: Ocasionally, you can see an overlap of particles at the window borders. 
+/* 
  * TODO: Add friction to simulate air friction that reducies kinetic energy.
  * TODO: Add UI panel to adjust variables, e.g. enabling and disabling friction.
- * TODO: Check particle collision has in worst case O(n^2). Optimize by using Quad Tree, etc.
+ * TODO: Add unified grid structure to compare performance with quadtree data structure.
  */
 
 

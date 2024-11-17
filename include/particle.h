@@ -4,7 +4,7 @@
 #include "raylib.h"
 
 
-typedef struct {
+typedef struct Particle {
     Vector2 position;
     Vector2 velocity;
     float radius;

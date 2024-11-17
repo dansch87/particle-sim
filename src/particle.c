@@ -57,15 +57,19 @@ void particle_update_position(Particle *p, float delta_time) {
 void particle_handle_window_collision(Particle *p) {
     // Change velocity direction when collision with window border occurs
     if (p->position.x > ((float)WINDOW_WIDTH - p->radius)) {
+        p->position.x = (float)WINDOW_WIDTH - p->radius;
 		p->velocity.x *= -1;
 	}
 	if (p->position.x < (0.0f + p->radius)) {
+        p->position.x = p->radius;
 		p->velocity.x *= -1;
 	}
 	if (p->position.y > ((float)WINDOW_HEIGHT - p->radius)) {
+        p->position.y = ((float)WINDOW_HEIGHT - p->radius);
 		p->velocity.y *= -1;
 	}
 	if (p->position.y < (0.0f + p->radius)) {
+        p->position.y = p->radius;
 		p->velocity.y *= -1;
 	}
 }

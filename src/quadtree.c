@@ -6,23 +6,14 @@
 #include "raylib.h"
 #include "quadtree.h"
 #include "config.h"
+#include "arena.h"
 
 
-
-QuadTree *quadtree_create(Rectangle *boundary) {
-    QuadTree *tree = (QuadTree*)malloc(sizeof(QuadTree));
-    if (tree == NULL) {
-        fprintf(stderr, "Failed to allocate memory for QuadTree.\n");
-        exit(1);
-    }
+QuadTree *quadtree_create(Arena *arena, Rectangle *boundary) {
+    QuadTree *tree = (QuadTree*)arena_alloc(arena, sizeof(QuadTree));
     tree->boundary = boundary;
 
-    tree->particles = (Particle**)malloc(sizeof(Particle*) * MAX_CAPACITY_QUAD);
-    if (tree->particles == NULL) {
-        fprintf(stderr, "Failed to allocate memory for tree->particles.\n");
-        free(tree);
-        exit(1);
-    }
+    tree->particles = (Particle**)arena_alloc(arena, sizeof(Particle*) * MAX_CAPACITY_QUAD);
     for (int i = 0; i < MAX_CAPACITY_QUAD; i++) {
         tree->particles[i] = NULL;
     }
@@ -38,12 +29,10 @@ QuadTree *quadtree_create(Rectangle *boundary) {
     return tree;
 }
 
-Rectangle* CreateAABB(Rectangle rect) {
-    Rectangle *aabb = (Rectangle*)malloc(sizeof(Rectangle));
-    if (aabb == NULL) {
-        fprintf(stdin, "Failed to allocate memory for AABB.\n");
-        exit(1);
-    }
+Rectangle* CreateAABB(Arena *arena, Rectangle rect) {
+
+    Rectangle *aabb = (Rectangle*)arena_alloc(arena, sizeof(Rectangle));
+
     aabb->x = rect.x;
     aabb->y = rect.y;
     aabb->height = rect.height;
@@ -52,19 +41,19 @@ Rectangle* CreateAABB(Rectangle rect) {
     return aabb;
 }
 
-void quadtree_subdivide(QuadTree *root) {
+void quadtree_subdivide(Arena *arena, QuadTree *root) {
     float halfWidth = root->boundary->width / 2;
     float halfHeight = root->boundary->height / 2;
     float x = root->boundary->x;
     float y = root->boundary->y;
 
-    root->nw = quadtree_create(CreateAABB((Rectangle){x, y, halfWidth, halfHeight}));
-    root->ne = quadtree_create(CreateAABB((Rectangle){x + halfWidth, y, halfWidth, halfHeight}));
-    root->sw = quadtree_create(CreateAABB((Rectangle){x, y + halfHeight, halfWidth, halfHeight}));
-    root->se = quadtree_create(CreateAABB((Rectangle){x + halfWidth, y + halfHeight, halfWidth, halfHeight}));
+    root->nw = quadtree_create(arena, CreateAABB(arena, (Rectangle){x, y, halfWidth, halfHeight}));
+    root->ne = quadtree_create(arena, CreateAABB(arena, (Rectangle){x + halfWidth, y, halfWidth, halfHeight}));
+    root->sw = quadtree_create(arena, CreateAABB(arena, (Rectangle){x, y + halfHeight, halfWidth, halfHeight}));
+    root->se = quadtree_create(arena, CreateAABB(arena, (Rectangle){x + halfWidth, y + halfHeight, halfWidth, halfHeight}));
 }
 
-bool quadtree_insert(QuadTree *root, Particle *particle) {
+bool quadtree_insert(Arena *arena, QuadTree *root, Particle *particle) {
     if (!CheckCollisionPointRec(particle->position, *(root)->boundary)) {
         return false;
     }
@@ -75,15 +64,20 @@ bool quadtree_insert(QuadTree *root, Particle *particle) {
     }
 
     if (root->nw == NULL) {
-        quadtree_subdivide(root);
+        quadtree_subdivide(arena, root);
     }
 
-    if (quadtree_insert(root->nw, particle)) return true;
-    if (quadtree_insert(root->ne, particle)) return true;
-    if (quadtree_insert(root->sw, particle)) return true;
-    if (quadtree_insert(root->se, particle)) return true;
-
-    return false;
+    if (quadtree_insert(arena, root->nw, particle)) {
+        return true;
+    } else if (quadtree_insert(arena, root->ne, particle)) {
+        return true;
+    } else if (quadtree_insert(arena, root->sw, particle)) {
+        return true;
+    } else if (quadtree_insert(arena, root->se, particle)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 

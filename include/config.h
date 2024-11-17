@@ -2,25 +2,24 @@
 #define CONFIG_H_
 
 
-#define MAX_PARTICLES 1000 // 14000
-
-
-
+// Screen Settings
 #define WINDOW_WIDTH 1660
 #define WINDOW_HEIGHT 920
+#define BACKGROUND_COLOR BLACK
 
-
-
+// Particle Settings
+#define MAX_PARTICLES 20000 // 14000
 #define PARTICLE_VELOCITY 100
 #define PARTICLE_RADIUS 1.8f
 #define PARTICLE_COLOR YELLOW
-#define BACKGROUND_COLOR BLACK
+
 
 // Quad Tree Config
-#define MAX_CAPACITY_QUAD 5
+#define MAX_CAPACITY_QUAD 10
 #define QUAD_TREE_COLOR GREEN
 #define MAX_NEARBY_PARTICLES (MAX_PARTICLES / 10)
 #define SEARCH_RADIUS (PARTICLE_RADIUS * 3)
 #define DRAW_QUAD_TREE_TO_SCREEN 0
+
 
 #endif

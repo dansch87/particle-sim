@@ -5,7 +5,7 @@
 #include "config.h"
 #include "particle.h"
 #include "quadtree.h"
-
+#include "arena.h"
 
 /* TODO: Ocasionally, you can see an overlap of particles at the window borders. 
  * TODO: Add friction to simulate air friction that reducies kinetic energy.
@@ -34,21 +34,27 @@ int main(void) {
                 );
     }
 
+    // Create Arena
+    Arena arena = arena_init(MB * 10);
 
     Rectangle boundary = (Rectangle){0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
-	QuadTree *quadtree = quadtree_create(&boundary);
+	QuadTree *quadtree = quadtree_create(&arena, &boundary);
 
 
     while (!WindowShouldClose()) {
 
         float delta_time = GetFrameTime();
 
-        quadtree_clear(quadtree);
+        //quadtree_clear(quadtree);
+        arena_clear(&arena);
+        QuadTree *quadtree = quadtree_create(&arena, &boundary);
+        
+        
 		for (int i = 0; i < MAX_PARTICLES; i++) {
-            quadtree_insert(quadtree, &particles[i]);
+            quadtree_insert(&arena, quadtree, &particles[i]);
         }
         printf("Quadtree Element Count %d\n", quadtree_element_count(quadtree));
-
+        arena_print(&arena);
 
         // Update Particles
         for (int i = 0; i < MAX_PARTICLES; i++) {

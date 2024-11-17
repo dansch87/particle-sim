@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "raylib.h"
 #include "particle.h"
+#include "arena.h"
 
 
 typedef struct QuadTree {
@@ -18,13 +19,13 @@ typedef struct QuadTree {
 } QuadTree;
 
 
-QuadTree* quadtree_create(Rectangle *boundary);
+QuadTree *quadtree_create(Arena *arena, Rectangle *boundary) ;
 
-Rectangle* CreateAABB(Rectangle rect);
+Rectangle* CreateAABB(Arena *arena, Rectangle rect);
 
-void quadtree_subdivide(QuadTree *root);
+void quadtree_subdivide(Arena *arena, QuadTree *root);
 
-bool quadtree_insert(QuadTree *root, Particle *particle);
+bool quadtree_insert(Arena *arena, QuadTree *root, Particle *particle);
 
 void quadtree_destroy(QuadTree* tree);
 
